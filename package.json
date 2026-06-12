@@ -47,5 +47,8 @@
   "uriHandler": {
     "method": "handleURI",
     "deferActivation": false
+  },
+  "deserializers": {
+    "HTMLEditor": "deserializeHTMLEditor"
   }
 }
