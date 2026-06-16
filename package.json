@@ -2,8 +2,8 @@
   "name": "tranquil-browser",
   "main": "./lib/tranquil-browser",
   "version": "0.0.99",
-  "description": "Tranquil Browser- Real Browser in Atom",
-  "repository": "https://github.com/skandasoft/browser-plus",
+  "description": "Chromium browser with devtools, zoom, history, and direct .url file support from the Project Pane",
+  "repository": "https://github.com/tranquillabs/tranquil-browser",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"

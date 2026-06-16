@@ -266,6 +266,6 @@ document.addEventListener('click', function (event) {
 });
 
 window.addEventListener('keydown',(e)=>{
-  const {keyIdentifier,ctrlKey,altKey,key,code,keyCode,charCode}=e
-  ipcRenderer.send('webview-key-events', { w_event : {keyIdentifier,ctrlKey,altKey,key,code,keyCode,charCode} });
+  const {keyIdentifier,ctrlKey,altKey,metaKey,key,code,keyCode,charCode}=e
+  ipcRenderer.send('webview-key-events', { w_event : {keyIdentifier,ctrlKey,altKey,metaKey,key,code,keyCode,charCode} });
 })
