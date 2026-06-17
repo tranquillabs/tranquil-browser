@@ -7,6 +7,12 @@
     "cmd-t": "tranquil-browser:open",
     "cmd-shift-a": "tranquil-browser:add-to-tree-view"
   },
+  ".platform-darwin .tranquil-browser": {
+    "cmd-l": "tranquil-browser:focus-url"
+  },
+  ".platform-darwin atom-workspace": {
+    "cmd-l": "tranquil-browser:focus-url"
+  },
   ".browser-cross webview": {
     "tab": "native!",
     "shift-tab": "native!",
