@@ -71,7 +71,7 @@ riot.tag(
       </ul>
     </li>
   `,
-  'hist-date-li .hide{ display: none; } hist-date-li a{ text-decoration: un } hist-date-li .color{ background-color: yellow; } .octicon-trashcan::before{ font-family:\'Octicons Regular\'; content: "\\f0d0"; } hist-date-li li img { width: 20px; height: 20px; padding: 0 10px; } hist-date-li li a { text-decoration: none; padding: 0 20px;color: white   } hist-date-li li .trash { opacity: 0.3; } hist-date-li li .trash:hover { opacity: 1; padding: 0 10px; cursor:pointer }',
+  'hist-date-li .hide { display: none; }',
   function (opts) {
     this.showDate = (function (_this) {
       return function (date) {
