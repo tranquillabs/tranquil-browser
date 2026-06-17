@@ -188,6 +188,12 @@ webview::shadow {
   width: 16px;
   aspect-ratio: 1;
   flex-shrink: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  padding: 4px;
+  box-sizing: content-box;
+  margin: 0 -4px;
 }
 
 .apm-browser-icon {
@@ -257,6 +263,11 @@ webview::shadow {
   .apm-browser-icon {
     filter: brightness(0) invert(0.9);
   }
+
+  .apm-browser-icon-wrapper:hover {
+    background-color: @dark-border;
+    box-shadow: 4px 0 0 0 @dark-border, -4px 0 0 0 @dark-border;
+  }
 }
 
 // ── Light theme ─────────────────────────────────────────────────────────────
@@ -313,5 +324,10 @@ webview::shadow {
 
   .apm-browser-icon {
     filter: brightness(0) saturate(0%);
+  }
+
+  .apm-browser-icon-wrapper:hover {
+    background-color: @light-border;
+    box-shadow: 4px 0 0 0 @light-border, -4px 0 0 0 @light-border;
   }
 }

@@ -14,69 +14,21 @@ riot.tag(
   function (opts) {
     this.filter = (function (_this) {
       return function (e) {
-        var date,
-          hide_date,
-          hist,
-          history,
-          itm,
-          itms,
-          title,
-          _i,
-          _j,
-          _len,
-          _len1,
-          _ref,
-          _ref1,
-          _results;
-        history = $.jStorage.get('bp.history');
-        title = $.jStorage.get('bp.title');
-        _results = [];
-        for (_i = 0, _len = history.length; _i < _len; _i++) {
-          hist = history[_i];
-          for (date in hist) {
-            itms = hist[date];
-            hide_date = true;
-            for (_j = 0, _len1 = itms.length; _j < _len1; _j++) {
-              itm = itms[_j];
-              if (
-                ((_ref = document.querySelector('[name=search]').value) != null
-                  ? _ref.len
-                  : void 0) < 2
-              ) {
-                itm.hide = false;
-                hide_date = false;
-              } else {
-                if (
-                  itm.uri.indexOf(
-                    document.querySelector('[name=search]').value
-                  ) < 0
-                ) {
-                  if (
-                    ((_ref1 = title[itm.uri]) != null
-                      ? _ref1
-                          .toLowerCase()
-                          .indexOf(
-                            document
-                              .querySelector('[name=search]')
-                              .value.toLowerCase()
-                          )
-                      : void 0) < 0
-                  ) {
-                    itm.hide = true;
-                  } else {
-                    itm.hide = false;
-                    hide_date = false;
-                  }
-                } else {
-                  itm.hide = false;
-                  hide_date = false;
-                }
-              }
-            }
-          }
-          _results.push((itms.hide_date = hide_date));
-        }
-        return _results;
+        var term = (document.querySelector('[name=search]').value || '').toLowerCase();
+        var groups = document.querySelectorAll('#history > hist-date-li');
+        [].forEach.call(groups, function (group) {
+          var items = group.querySelectorAll('.histories-wrapper > li');
+          var anyVisible = false;
+          [].forEach.call(items, function (item) {
+            var link = item.querySelector('[data-link]');
+            var uri = link ? (link.getAttribute('data-link') || '').toLowerCase() : '';
+            var title = link ? link.textContent.trim().toLowerCase() : '';
+            var show = term.length < 2 || uri.indexOf(term) >= 0 || title.indexOf(term) >= 0;
+            item.style.display = show ? '' : 'none';
+            if (show) anyVisible = true;
+          });
+          group.style.display = (term.length < 2 || anyVisible) ? '' : 'none';
+        });
       };
     })(this);
 
