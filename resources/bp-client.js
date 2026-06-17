@@ -253,10 +253,9 @@ document.addEventListener('click', function (event) {
   const activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
 
   if ((event.ctrlKey || event.metaKey) && activeElTagName === 'a') {
-    // Prevent the default behavior (copying)
     event.preventDefault();
     const link = getSelectionLink();
-    ipcRenderer.send('open-link-in-new-tab', { link, id: Date.now() });
+    ipcRenderer.send('open-link-in-new-tab', { link, id: Date.now(), foreground: true });
   } else if (activeElTagName === 'a') {
     const linkType = activeEl.dataset.linkType;
     if (linkType === 'history') {

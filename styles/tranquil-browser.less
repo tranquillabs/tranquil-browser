@@ -208,6 +208,25 @@ webview::shadow {
   pointer-events: none;
 }
 
+// Keep spinner in layout so it doesn't cause jank when toggled during navigation
+.nav-btns-left-bc .fa-spinner {
+  width: 16px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+// Override the global `display: none !important` from .fa-custom while still hiding visually
+.nav-btns-left-bc .fa-spinner.fa-custom {
+  visibility: hidden !important;
+  display: block !important;
+}
+
+// Suppress browser default focus ring on URL input
+#url {
+  outline: none;
+}
+
 // ── Dark theme ──────────────────────────────────────────────────────────────
 
 .theme-tranquil-theme-dark {
