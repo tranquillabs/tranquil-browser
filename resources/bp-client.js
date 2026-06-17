@@ -255,11 +255,12 @@ document.addEventListener('click', function (event) {
   if ((event.ctrlKey || event.metaKey) && activeElTagName === 'a') {
     event.preventDefault();
     const link = getSelectionLink();
-    ipcRenderer.send('open-link-in-new-tab', { link, id: Date.now(), foreground: true });
+    ipcRenderer.send('open-link-in-new-tab', { link, id: Date.now() });
   } else if (activeElTagName === 'a') {
     const linkType = activeEl.dataset.linkType;
     if (linkType === 'history') {
-      ipcRenderer.send('open-link-in-new-tab', { link: activeEl.dataset.link, id: Date.now() });
+      event.preventDefault();
+      window.location.href = activeEl.dataset.link;
     }
   }
 });
