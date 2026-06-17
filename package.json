@@ -4,6 +4,7 @@
   "version": "0.0.99",
   "description": "Chromium browser with devtools, zoom, history, and direct .url file support from the Project Pane",
   "repository": "https://github.com/tranquillabs/tranquil-browser",
+  "author": { "name": "Tranquil Labs", "url": "https://github.com/tranquillabs" },
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
