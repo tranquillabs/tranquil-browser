@@ -260,7 +260,7 @@ document.addEventListener('click', function (event) {
   } else if (activeElTagName === 'a') {
     const linkType = activeEl.dataset.linkType;
     if (linkType === 'history') {
-      window.open(activeEl.dataset.link);
+      ipcRenderer.send('open-link-in-new-tab', { link: activeEl.dataset.link, id: Date.now() });
     }
   }
 });
