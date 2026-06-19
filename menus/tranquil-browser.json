@@ -8,6 +8,14 @@
       { "label": "Open URL…", "command": "tranquil-browser:open-url-file" },
       { "type": "separator" }
     ],
+    ".tree-view .file .name[data-name$='.html']": [
+      { "label": "Open in Browser", "command": "tranquil-browser:open-html-file" },
+      { "type": "separator" }
+    ],
+    ".tree-view .file .name[data-name$='.htm']": [
+      { "label": "Open in Browser", "command": "tranquil-browser:open-html-file" },
+      { "type": "separator" }
+    ],
     "[data-type='HTMLEditor']": [
       {
         "label": "Open tab in new window",
