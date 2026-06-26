@@ -1,6 +1,5 @@
 const { contextBridge, ipcRenderer, remote } = require('electron');
 const { FindInPage } = require('./electron-find/index.js');
-console.log('bp-client loaded');
 
 contextBridge.exposeInMainWorld('electron', {
   send: (channel, data) => {
@@ -117,11 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
       );
     }
   };
-  if (typeof jQuery === 'undefined') {
-    console.log('~tranquil-browser-jquery~');
-  } else {
-    console.log('~tranquil-browser-menu~');
-  }
 });
 
 function getSelectionLink() {
@@ -266,6 +260,6 @@ document.addEventListener('click', function (event) {
 });
 
 window.addEventListener('keydown',(e)=>{
-  const {keyIdentifier,ctrlKey,altKey,metaKey,key,code,keyCode,charCode}=e
-  ipcRenderer.send('webview-key-events', { w_event : {keyIdentifier,ctrlKey,altKey,metaKey,key,code,keyCode,charCode} });
+  const {keyIdentifier,ctrlKey,altKey,metaKey,shiftKey,key,code,keyCode,charCode}=e
+  ipcRenderer.send('webview-key-events', { w_event : {keyIdentifier,ctrlKey,altKey,metaKey,shiftKey,key,code,keyCode,charCode} });
 })

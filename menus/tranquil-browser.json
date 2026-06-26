@@ -2,6 +2,7 @@
   "context-menu": {
     ".tree-view li.directory > .header": [
       { "label": "Open all URLs…", "command": "tranquil-browser:open-all-urls-in-folder" },
+      { "label": "Open all files…", "command": "tranquil-browser:open-all-files-in-folder" },
       { "type": "separator" }
     ],
     ".tree-view .file .name[data-name$='.url']": [
@@ -16,52 +17,60 @@
       { "label": "Open in Browser", "command": "tranquil-browser:open-html-file" },
       { "type": "separator" }
     ],
-    "[data-type='HTMLEditor']": [
+    ".tab[data-type='HTMLEditor']": [
+      { "type": "separator" },
+      {
+        "label": "Add URL to Treeview",
+        "command": "tranquil-browser:add-to-tree-view",
+        "beforeGroupContaining": ["tabs:close-tab"]
+      },
       {
         "label": "Open tab in new window",
         "command": "tranquil-browser:open-link-in-new-window"
       },
       {
-        "label": "Add URL to Treeview",
-        "command": "tranquil-browser:add-to-tree-view"
-      }, {
         "label": "Open new tab",
         "command": "tranquil-browser:open"
-      } 
+      },
+      { "type": "separator" }
     ],
     ".input-url-bc": [
       {
-        "label": "Cut",
-        "command": "core:cut"
-      }, {
-        "label": "Copy",
-        "command": "core:copy"
-      } ,{
-        "label": "Paste",
-        "command": "core:paste"
-      },{
-        "label": "Select all",
-        "command": "core:select-all"
-      },{
         "label": "Add URL to Treeview",
         "command": "tranquil-browser:add-to-tree-view"
-      },
-      {
-        "type": "separator"
       },
       {
         "label": "Open URL in new window",
         "command": "tranquil-browser:open-link-in-new-window"
-      },{
+      },
+      {
         "label": "Open URL in default browser",
         "command": "tranquil-browser:open-link-in-default-browser"
+      },
+      { "type": "separator" },
+      {
+        "label": "Cut",
+        "command": "core:cut"
+      },
+      {
+        "label": "Copy",
+        "command": "core:copy"
+      },
+      {
+        "label": "Paste",
+        "command": "core:paste"
+      },
+      {
+        "label": "Select all",
+        "command": "core:select-all"
       }
     ],
     "atom-text-editor": [
       {
         "label": "Open Tranquil browser",
         "command": "tranquil-browser:open"
-      }
+      },
+      { "type": "separator" }
     ]
   }
 }

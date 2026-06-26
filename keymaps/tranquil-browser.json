@@ -5,15 +5,13 @@
   },
   ".platform-darwin atom-workspace": {
     "cmd-t": "tranquil-browser:open",
-    "cmd-shift-a": "tranquil-browser:add-to-tree-view"
+    "cmd-shift-a": "tranquil-browser:add-to-tree-view",
+    "cmd-l": "tranquil-browser:focus-url"
   },
   ".platform-darwin .tranquil-browser": {
     "cmd-l": "tranquil-browser:focus-url",
     "cmd-r": "tranquil-browser:refresh",
     "cmd-shift-r": "tranquil-browser:hard-refresh"
-  },
-  ".platform-darwin atom-workspace": {
-    "cmd-l": "tranquil-browser:focus-url"
   },
   ".browser-cross webview": {
     "tab": "native!",
