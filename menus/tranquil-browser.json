@@ -13,6 +13,10 @@
       { "label": "Open in Browser", "command": "tranquil-browser:open-html-file" },
       { "type": "separator" }
     ],
+    ".tree-view .file .name[data-name$='.har']": [
+      { "label": "Open HAR Replay", "command": "tranquil-browser:open-har-file" },
+      { "type": "separator" }
+    ],
     ".tree-view .file .name[data-name$='.htm']": [
       { "label": "Open in Browser", "command": "tranquil-browser:open-html-file" },
       { "type": "separator" }
@@ -31,6 +35,10 @@
       {
         "label": "Open new tab",
         "command": "tranquil-browser:open"
+      },
+      {
+        "label": "Save HAR to Tree View…",
+        "command": "tranquil-browser:save-har"
       },
       { "type": "separator" }
     ],
