@@ -250,6 +250,13 @@ document.addEventListener('click', function (event) {
     event.preventDefault();
     const link = getSelectionLink();
     ipcRenderer.send('open-link-in-new-tab', { link, id: Date.now() });
+    // opt/alt held → also save the link as a numbered .url in the tree view.
+    // `event.altKey` covers opt (mac) and Alt (Win/Linux). Guard AltGr
+    // (Ctrl+Alt on some non-US layouts) so it isn't mistaken for the save modifier.
+    if (event.altKey && !event.getModifierState('AltGraph')) {
+      const text = (activeEl.textContent || activeEl.title || '').trim();
+      ipcRenderer.sendToHost('tranquil-browser:save-link', { link, text });
+    }
   } else if (activeElTagName === 'a') {
     const linkType = activeEl.dataset.linkType;
     if (linkType === 'history') {
