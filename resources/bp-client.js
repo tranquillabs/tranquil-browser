@@ -1,5 +1,35 @@
-const { contextBridge, ipcRenderer, remote } = require('electron');
+const { contextBridge, ipcRenderer, remote, webFrame } = require('electron');
 const { FindInPage } = require('./electron-find/index.js');
+
+// Polyfill newer URL statics that this Electron's Chromium (30.5.1 → Chromium
+// 124) predates. `URL.parse`/`URL.canParse` landed in Chromium 126, and sites
+// (e.g. openai.com) call them in their bundles, which throws
+// "URL.parse is not a function" and blocks the whole page from loading.
+// The preload runs in the isolated world, so inject into the page's main world
+// via webFrame.executeJavaScript — this runs before any page script executes.
+webFrame.executeJavaScript(`
+  (function () {
+    if (typeof URL.parse !== 'function') {
+      URL.parse = function (url, base) {
+        try {
+          return base === undefined ? new URL(url) : new URL(url, base);
+        } catch (e) {
+          return null;
+        }
+      };
+    }
+    if (typeof URL.canParse !== 'function') {
+      URL.canParse = function (url, base) {
+        try {
+          base === undefined ? new URL(url) : new URL(url, base);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      };
+    }
+  })();
+`);
 
 contextBridge.exposeInMainWorld('electron', {
   send: (channel, data) => {
