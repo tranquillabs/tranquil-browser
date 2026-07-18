@@ -7,7 +7,7 @@
   ".platform-darwin atom-workspace": {
     "cmd-t": "tranquil-browser:open",
     "cmd-shift-a": "tranquil-browser:add-to-tree-view",
-    "cmd-l": "tranquil-browser:focus-url",
+    "cmd-l": "tranquil-browser:open",
     "alt-cmd-w": "tranquil-browser:close-tab-and-delete-url"
   },
   ".platform-darwin .tranquil-browser": {
