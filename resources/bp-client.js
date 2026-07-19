@@ -1,5 +1,4 @@
-const { contextBridge, ipcRenderer, remote, webFrame } = require('electron');
-const { FindInPage } = require('./electron-find/index.js');
+const { contextBridge, ipcRenderer, webFrame } = require('electron');
 
 // Polyfill newer URL statics that this Electron's Chromium (30.5.1 → Chromium
 // 124) predates. `URL.parse`/`URL.canParse` landed in Chromium 126, and sites
@@ -255,20 +254,6 @@ ipcRenderer.on('get-selected-image-link', () => {
       }
     }
   }
-});
-
-let findInPage;
-ipcRenderer.on('on-find', (e, args) => {
-  findInPage = new FindInPage(remote.getCurrentWebContents(), {
-    preload: true,
-    offsetTop: 6,
-    offsetRight: 10,
-  });
-  findInPage.openFindWindow();
-});
-
-ipcRenderer.on('close-find', (e, args) => {
-  findInPage.destroy();
 });
 
 // Add an event listener to the keydown event for the document or specific elements

@@ -144,16 +144,102 @@ webview::shadow {
   text-decoration: none !important;
 }
 
-.find-bc {
-  width: 200px !important;
-  height: 25px;
-  position: absolute;
-  border-radius: 30px;
-  padding-left: 5px;
-}
+// Browser find-in-page pane item — a draggable workspace item (bottom dock by
+// default). Layout/geometry only; colors come from the business themes'
+// styles/tranquil-browser.less using the design tokens (the active theme owns
+// the design-system palette — Atom's @ui-variables carry default grays). Geometry
+// mirrors main-view.html's .form-input / .btn.
+.tranquil-browser-find {
+  display: flex;
+  // Pin the bar to the top of the pane rather than centering it vertically.
+  align-items: flex-start;
+  height: 100%;
+  box-sizing: border-box;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.4;
 
-.find-hide-bc {
-  display: none;
+  .glyph {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .tranquil-browser-find-lead {
+    // Inline SVG magnifier, centered against the 32px control row. Clickable —
+    // runs the find like Enter.
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    flex-shrink: 0;
+    cursor: pointer;
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+  }
+
+  .tranquil-browser-find-input {
+    flex: 1 1 auto;
+    min-width: 8em;
+    max-width: 28em;
+    height: 32px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+  }
+
+  .tranquil-browser-find-count {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+
+    // No reserved slot when there are no results — keeps the buttons next to the
+    // input instead of leaving a gap.
+    &:empty {
+      display: none;
+    }
+  }
+
+  // Distinct, filled icon buttons (colors from the theme).
+  .tranquil-browser-find-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  .tranquil-browser-find-close {
+    margin-left: 4px;
+  }
 }
 
 .nav-btns-left-bc {

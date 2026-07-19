@@ -2,13 +2,15 @@
   ".platform-win32 atom-workspace, .platform-linux atom-workspace": {
     "ctrl-t": "tranquil-browser:open",
     "ctrl-shift-a": "tranquil-browser:add-to-tree-view",
-    "ctrl-alt-w": "tranquil-browser:close-tab-and-delete-url"
+    "ctrl-alt-w": "tranquil-browser:close-tab-and-delete-url",
+    "ctrl-f": "tranquil-browser:find"
   },
   ".platform-darwin atom-workspace": {
     "cmd-t": "tranquil-browser:open",
     "cmd-shift-a": "tranquil-browser:add-to-tree-view",
     "cmd-l": "tranquil-browser:open-in-active-pane",
-    "alt-cmd-w": "tranquil-browser:close-tab-and-delete-url"
+    "alt-cmd-w": "tranquil-browser:close-tab-and-delete-url",
+    "cmd-f": "tranquil-browser:find"
   },
   ".platform-darwin atom-text-editor": {
     "cmd-l": "tranquil-browser:open-in-active-pane"
@@ -17,6 +19,14 @@
     "cmd-l": "tranquil-browser:focus-url",
     "cmd-r": "tranquil-browser:refresh",
     "cmd-shift-r": "tranquil-browser:hard-refresh"
+  },
+  ".platform-darwin .tranquil-browser-find": {
+    "cmd-g": "tranquil-browser:find-next",
+    "cmd-shift-g": "tranquil-browser:find-previous"
+  },
+  ".platform-win32 .tranquil-browser-find, .platform-linux .tranquil-browser-find": {
+    "ctrl-g": "tranquil-browser:find-next",
+    "ctrl-shift-g": "tranquil-browser:find-previous"
   },
   ".browser-cross webview": {
     "tab": "native!",
