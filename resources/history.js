@@ -1,3 +1,15 @@
+// The history page runs in this window's isolated webview partition; its
+// jStorage is a copy the host view injected on load. When the user clears or
+// deletes entries here, report the new array back to the host so it persists
+// into the window's real history store (see utils.js history-changed handler).
+function reportHistoryChanged(hist) {
+  try {
+    if (window.electron && window.electron.sendToHost) {
+      window.electron.sendToHost('tranquil-browser:history-changed', hist);
+    }
+  } catch (e) {}
+}
+
 riot.tag(
   'hist',
   `
@@ -38,6 +50,7 @@ riot.tag(
         history = $.jStorage.get('bp.history');
         history.length = 0;
         $.jStorage.set('bp.history', history);
+        reportHistoryChanged(history);
         return _this.update();
       };
     })(this);
@@ -164,6 +177,7 @@ riot.tag(
           }
         }
         $.jStorage.set('bp.history', hist);
+        reportHistoryChanged(hist);
         return _this.unmount();
       };
     })(this);
@@ -183,6 +197,7 @@ riot.tag(
           }
         }
         $.jStorage.set('bp.history', history);
+        reportHistoryChanged(history);
         if (thatDay.length === 0) {
           return _this.deleteDate();
         }
