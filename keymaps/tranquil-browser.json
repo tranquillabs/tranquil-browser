@@ -7,11 +7,8 @@
   ".platform-darwin atom-workspace": {
     "cmd-t": "tranquil-browser:open",
     "cmd-shift-a": "tranquil-browser:add-to-tree-view",
-    "cmd-l": "tranquil-browser:open-in-active-pane",
+    "cmd-l": "tranquil-browser:focus-url",
     "cmd-f": "tranquil-browser:find"
-  },
-  ".platform-darwin atom-text-editor": {
-    "cmd-l": "tranquil-browser:open-in-active-pane"
   },
   ".platform-darwin .tranquil-browser": {
     "cmd-l": "tranquil-browser:focus-url",
