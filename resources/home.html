@@ -1,15 +1,241 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
     <title>Tranquil-Browser:Blank</title>
     <script>
-      history.pushState('data', 'Blank', 'tranquil-browser://blank');
+      // No history.pushState here: faking a cross-origin "tranquil-browser://blank"
+      // URL breaks the Back button (Chromium can't reload that fake entry from
+      // another page). The host maps this real home.html document to the friendly
+      // "tranquil-browser://blank" in the address bar instead (see updatePageUrl).
       ( async () => {
         await new Promise(r => setTimeout(r, 100));
         window?.electron?.send('tab-focus');
       } )();
     </script>
+    <style>
+      /* Tranquil business palette, hardcoded (the page is an isolated file://
+         webview and can't read theme LESS). :root = business-dark; the media
+         query below overrides with business-light. Values mirror
+         tranquil-business-{dark,light}/styles/colors.less. */
+      :root {
+        --bg:        #1F1E1B;
+        --bg-input:  #34322D;
+        --text:      #E6E1D8;
+        --text-dim:  #7F776D;
+        --heading:   #F1ECE3;
+        --border:    #34322D;
+        --accent:    #78A4FF;
+        /* logo.svg references --color-accent; keep it in sync. */
+        --color-accent: var(--accent);
+        --shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg:        #FFFFFF;
+          --bg-input:  #EBEBEA;
+          --text:      #37352F;
+          --text-dim:  #B4B4B4;
+          --heading:   #37352F;
+          --border:    #E9E9E7;
+          --accent:    #155DFF;
+          --shadow: 0 8px 30px rgba(15, 15, 15, 0.08);
+        }
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Sit a touch above dead-center — reads calmer than true middle. */
+        padding-bottom: 6vh;
+      }
+
+      .home {
+        width: 100%;
+        max-width: 560px;
+        padding: 0 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+
+      @keyframes rise {
+        to { opacity: 1; transform: none; }
+      }
+
+      .mark {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 22px;
+      }
+
+      .wordmark {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        color: var(--heading);
+        text-indent: 0.14em; /* balance the trailing letter-spacing */
+      }
+
+      .clock {
+        margin: 18px 0 2px;
+        font-size: 52px;
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: 0.01em;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .greeting {
+        margin: 0 0 30px;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--text-dim);
+      }
+
+      .search {
+        position: relative;
+        width: 100%;
+      }
+
+      .search svg {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 17px;
+        height: 17px;
+        stroke: var(--text-dim);
+        pointer-events: none;
+      }
+
+      .search input {
+        width: 100%;
+        height: 50px;
+        padding: 0 20px 0 46px;
+        font: inherit;
+        font-size: 15px;
+        color: var(--text);
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 25px;
+        outline: none;
+        box-shadow: var(--shadow);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .search input::placeholder { color: var(--text-dim); }
+
+      .search-note {
+        margin: 14px 0 0;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        color: var(--text-dim);
+      }
+
+      .search input:focus {
+        border-color: var(--accent);
+        box-shadow: var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+      }
+
+      /* color-mix fallback for older engines: a plain accent ring. */
+      @supports not (color: color-mix(in srgb, red, blue)) {
+        .search input:focus { box-shadow: var(--shadow), 0 0 0 3px var(--accent); }
+      }
+    </style>
   </head>
   <body>
+    <main class="home">
+      <!-- Brand mark (from www-tranquil Logo.svelte), driven by --accent. -->
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- ascender + descender rails -->
+        <path d="M2 5 H30"  stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"></path>
+        <path d="M2 27 H30" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"></path>
+        <!-- node -->
+        <rect x="10" y="11" width="12" height="10" rx="3" stroke="var(--accent)" stroke-width="3"></rect>
+        <!-- ports: two in, one out -->
+        <path d="M2 14 H10"  stroke="var(--accent)" stroke-width="3" stroke-linecap="round"></path>
+        <path d="M2 18 H10"  stroke="var(--accent)" stroke-width="3" stroke-linecap="round"></path>
+        <path d="M22 16 H30" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"></path>
+      </svg>
+
+      <h1 class="wordmark">TRANQUIL</h1>
+      <div class="clock" id="clock">&nbsp;</div>
+      <p class="greeting" id="greeting">&nbsp;</p>
+
+      <form class="search" id="search" autocomplete="off">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+        </svg>
+        <input id="q" type="text" placeholder="Search the web or enter a URL"
+               spellcheck="false" autocapitalize="off" autocorrect="off" />
+      </form>
+      <p class="search-note">Search provided by DuckDuckGo</p>
+    </main>
+
+    <script>
+      (function () {
+        // --- Clock + greeting -------------------------------------------------
+        var clockEl = document.getElementById('clock');
+        var greetEl = document.getElementById('greeting');
+
+        function render() {
+          var now = new Date();
+          var h = now.getHours();
+          var m = now.getMinutes();
+          var hour12 = h % 12 || 12;
+          clockEl.textContent = hour12 + ':' + (m < 10 ? '0' + m : m);
+          greetEl.textContent =
+            'Good ' + (h < 12 ? 'morning' : h < 18 ? 'afternoon' : 'evening');
+        }
+        render();
+        setInterval(render, 15000); // catch the minute rollover promptly
+
+        // --- Search / navigate ------------------------------------------------
+        var HAS_SCHEME = /^[a-z][a-z0-9+.-]*:\/\//i;
+        var DOMAIN_LIKE = /^[^\s]+\.[^\s]{2,}/;
+
+        function targetFor(raw) {
+          var v = raw.trim();
+          if (!v) return null;
+          if (HAS_SCHEME.test(v)) return v;
+          if (DOMAIN_LIKE.test(v) && !/\s/.test(v)) return 'https://' + v;
+          // DuckDuckGo — matches the engine used everywhere else in the browser
+          // (URL-bar search, right-click search, homepage fallback).
+          return 'https://duckduckgo.com/?q=' + encodeURIComponent(v);
+        }
+
+        document.getElementById('search').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var url = targetFor(document.getElementById('q').value);
+          if (url) window.location.href = url;
+        });
+
+        // Focus the field so typing works immediately on a fresh tab.
+        window.addEventListener('load', function () {
+          document.getElementById('q').focus();
+        });
+      })();
+    </script>
   </body>
 </html>
