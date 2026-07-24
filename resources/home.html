@@ -4,6 +4,16 @@
     <meta charset="utf-8" />
     <title>Tranquil-Browser:Blank</title>
     <script>
+      // The host tags this URL with the app's active theme (?theme=dark|light),
+      // which can differ from the OS color scheme. Apply it to <html> before the
+      // stylesheet parses so there's no flash; absent the param, the CSS below
+      // falls back to prefers-color-scheme.
+      (function () {
+        var m = /[?&]theme=(dark|light)/.exec(location.search);
+        if (m) document.documentElement.setAttribute('data-theme', m[1]);
+      })();
+    </script>
+    <script>
       // No history.pushState here: faking a cross-origin "tranquil-browser://blank"
       // URL breaks the Back button (Chromium can't reload that fake entry from
       // another page). The host maps this real home.html document to the friendly
@@ -15,10 +25,11 @@
     </script>
     <style>
       /* Tranquil business palette, hardcoded (the page is an isolated file://
-         webview and can't read theme LESS). :root = business-dark; the media
-         query below overrides with business-light. Values mirror
-         tranquil-business-{dark,light}/styles/colors.less. */
-      :root {
+         webview and can't read theme LESS). Default = business-dark; the light
+         palette applies when the host passes ?theme=light (data-theme on <html>),
+         or — absent the param — when the OS reports a light color scheme. Values
+         mirror tranquil-business-{dark,light}/styles/colors.less. */
+      :root, :root[data-theme="dark"] {
         --bg:        #1F1E1B;
         --bg-input:  #34322D;
         --text:      #E6E1D8;
@@ -30,8 +41,19 @@
         --color-accent: var(--accent);
         --shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
       }
+      :root[data-theme="light"] {
+        --bg:        #FFFFFF;
+        --bg-input:  #EBEBEA;
+        --text:      #37352F;
+        --text-dim:  #B4B4B4;
+        --heading:   #37352F;
+        --border:    #E9E9E7;
+        --accent:    #155DFF;
+        --shadow: 0 8px 30px rgba(15, 15, 15, 0.08);
+      }
+      /* No explicit theme from the host → follow the OS color scheme. */
       @media (prefers-color-scheme: light) {
-        :root {
+        :root:not([data-theme]) {
           --bg:        #FFFFFF;
           --bg-input:  #EBEBEA;
           --text:      #37352F;
