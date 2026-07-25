@@ -137,6 +137,24 @@
         font-variant-numeric: tabular-nums;
       }
 
+      /* AM/PM, sized down beside the time. */
+      .meridiem {
+        margin-left: 10px;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--text);
+      }
+
+      /* Time-zone abbreviation, sized down and dimmed beside the time. */
+      .tz {
+        margin-left: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        color: var(--text-dim);
+      }
+
       .greeting {
         margin: 0 0 30px;
         font-size: 15px;
@@ -249,7 +267,7 @@
       </svg>
 
       <h1 class="wordmark">TRANQUIL</h1>
-      <div class="clock" id="clock">&nbsp;</div>
+      <div class="clock"><span id="time">&nbsp;</span><span class="meridiem" id="meridiem"></span><span class="tz" id="tz"></span></div>
       <p class="greeting" id="greeting">&nbsp;</p>
 
       <form class="search" id="search" autocomplete="off">
@@ -269,15 +287,33 @@
     <script>
       (function () {
         // --- Clock + greeting -------------------------------------------------
-        var clockEl = document.getElementById('clock');
+        // Everything is local time (getHours/getMinutes + the OS time zone).
+        var timeEl = document.getElementById('time');
+        var meridiemEl = document.getElementById('meridiem');
+        var tzEl = document.getElementById('tz');
         var greetEl = document.getElementById('greeting');
+
+        // Short time-zone abbreviation for the local zone (e.g. "PDT", "GMT+1").
+        function tzAbbrev(now) {
+          try {
+            var parts = new Intl.DateTimeFormat(undefined, {
+              timeZoneName: 'short',
+            }).formatToParts(now);
+            for (var i = 0; i < parts.length; i++) {
+              if (parts[i].type === 'timeZoneName') return parts[i].value;
+            }
+          } catch (e) {}
+          return '';
+        }
 
         function render() {
           var now = new Date();
           var h = now.getHours();
           var m = now.getMinutes();
           var hour12 = h % 12 || 12;
-          clockEl.textContent = hour12 + ':' + (m < 10 ? '0' + m : m);
+          timeEl.textContent = hour12 + ':' + (m < 10 ? '0' + m : m);
+          meridiemEl.textContent = h < 12 ? 'AM' : 'PM';
+          tzEl.textContent = tzAbbrev(now);
           greetEl.textContent =
             'Good ' + (h < 12 ? 'morning' : h < 18 ? 'afternoon' : 'evening');
         }
