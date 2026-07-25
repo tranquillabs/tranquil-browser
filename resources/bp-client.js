@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer, webFrame } = require('electron');
+const https = require('https');
 
 // Polyfill newer URL statics that this Electron's Chromium (30.5.1 → Chromium
 // 124) predates. `URL.parse`/`URL.canParse` landed in Chromium 126, and sites
@@ -52,6 +53,44 @@ contextBridge.exposeInMainWorld('electron', {
       throw error; // Rethrow the error for the caller to handle
     }
   },
+  // Search-suggestion autocomplete for pages that need it (the blank start
+  // page's search box). The page is a file:// webview, so it can't fetch the
+  // suggestion endpoint cross-origin (no CORS headers) — do it here in the
+  // preload's Node context and hand back a plain string[]. DuckDuckGo's
+  // `type=list` endpoint returns OpenSearch `[term, [suggestions]]`, matching
+  // the engine used everywhere else in the browser. Always resolves (never
+  // rejects) so the caller can treat failure as "no suggestions".
+  suggest: (term) =>
+    new Promise((resolve) => {
+      try {
+        const req = https.get(
+          {
+            hostname: 'ac.duckduckgo.com',
+            path: '/ac/?type=list&q=' + encodeURIComponent(term),
+            headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'application/json' },
+          },
+          (res) => {
+            let body = '';
+            res.on('data', (c) => (body += c));
+            res.on('end', () => {
+              try {
+                const data = JSON.parse(body);
+                resolve(Array.isArray(data && data[1]) ? data[1] : []);
+              } catch (e) {
+                resolve([]);
+              }
+            });
+          }
+        );
+        req.on('error', () => resolve([]));
+        req.setTimeout(4000, () => {
+          req.destroy();
+          resolve([]);
+        });
+      } catch (e) {
+        resolve([]);
+      }
+    }),
 });
 
 document.addEventListener('contextmenu', function (e) {
