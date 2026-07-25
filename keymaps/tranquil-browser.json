@@ -17,6 +17,11 @@
     "cmd-r": "tranquil-browser:refresh",
     "cmd-shift-r": "tranquil-browser:hard-refresh"
   },
+  ".platform-win32 .tranquil-browser, .platform-linux .tranquil-browser": {
+    "ctrl-l": "tranquil-browser:focus-url",
+    "ctrl-r": "tranquil-browser:refresh",
+    "ctrl-shift-r": "tranquil-browser:hard-refresh"
+  },
   ".platform-darwin .tranquil-browser-find": {
     "cmd-g": "tranquil-browser:find-next",
     "cmd-shift-g": "tranquil-browser:find-previous"
