@@ -2,12 +2,14 @@
   ".platform-win32 atom-workspace, .platform-linux atom-workspace": {
     "ctrl-t": "tranquil-browser:open",
     "ctrl-shift-a": "tranquil-browser:add-to-tree-view",
+    "ctrl-s": "tranquil-browser:save-url",
     "ctrl-f": "tranquil-browser:find"
   },
   ".platform-darwin atom-workspace": {
     "cmd-t": "tranquil-browser:open",
     "cmd-shift-a": "tranquil-browser:add-to-tree-view",
     "cmd-l": "tranquil-browser:focus-url",
+    "cmd-s": "tranquil-browser:save-url",
     "cmd-f": "tranquil-browser:find"
   },
   ".platform-darwin .tranquil-browser": {
