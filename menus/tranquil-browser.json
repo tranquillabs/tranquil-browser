@@ -7,6 +7,7 @@
     ],
     ".tree-view .file .name[data-name$='.url']": [
       { "label": "Open URL…", "command": "tranquil-browser:open-url-file" },
+      { "label": "Open URL in editor…", "command": "tranquil-browser:open-url-file-in-editor" },
       { "type": "separator" }
     ],
     ".tree-view .file .name[data-name$='.html']": [
