@@ -311,14 +311,40 @@ document.addEventListener('click', function (event) {
       const text = (activeEl.textContent || activeEl.title || '').trim();
       ipcRenderer.sendToHost('tranquil-browser:save-link', { link, text });
     }
-  } else if (activeElTagName === 'a') {
-    const linkType = activeEl.dataset.linkType;
-    if (linkType === 'history') {
-      event.preventDefault();
-      window.location.href = activeEl.dataset.link;
-    }
+    return;
   }
-});
+
+  // Plain click. Resolve the clicked anchor via the event target (more reliable
+  // than document.activeElement, which isn't always the link).
+  const anchor =
+    event.target && event.target.closest ? event.target.closest('a') : null;
+  if (!anchor) return;
+
+  if (anchor.dataset && anchor.dataset.linkType === 'history') {
+    event.preventDefault();
+    window.location.href = anchor.dataset.link;
+    return;
+  }
+
+  // A link that opens in a new window/tab (target="_blank", commonly used by
+  // cross-domain/external links) is otherwise swallowed by the <webview> popup
+  // policy and appears to do nothing. Route it to a new browser tab instead —
+  // same flow as cmd-click. Plain same-window links fall through and navigate
+  // this tab natively.
+  if (anchor.target === '_blank' && anchor.href) {
+    event.preventDefault();
+    // Plain click → new FOREGROUND tab (switch to it), matching a normal
+    // browser. cmd-click (above) opens a BACKGROUND tab and keeps you put.
+    ipcRenderer.send('open-link-in-new-tab', {
+      link: anchor.href,
+      id: Date.now(),
+      foreground: true,
+    });
+  }
+  // Capture phase: heavy SPAs (GitHub, etc.) attach their own click handlers and
+  // may stopPropagation before a bubble-phase document listener ever runs, so we
+  // listen on the way DOWN to reliably see the click first.
+}, true);
 
 window.addEventListener('keydown',(e)=>{
   const {keyIdentifier,ctrlKey,altKey,metaKey,shiftKey,key,code,keyCode,charCode}=e

@@ -317,8 +317,8 @@ webview::shadow {
 // Browser-style pill anchored to the bottom-left of the view, fed by the guest's
 // native `update-target-url` event. The website behind it can be light or dark
 // independently of Tranquil's theme, so this is ONE fixed, theme-independent
-// design: a solid opaque pill (page never tints through) with a border and soft
-// shadow so it separates from any background — light or dark. Mirrors Firefox.
+// design: a solid opaque DARK pill with light text (like Firefox), plus a border
+// and soft shadow so it separates from any background — light or dark.
 
 // Anchor the pill to the browser view; the webview area starts 40px down (toolbar).
 .tranquil-browser {
@@ -343,12 +343,12 @@ webview::shadow {
   -webkit-font-smoothing: antialiased;
 
   // Fixed appearance — not tied to Tranquil's theme or the page's colours.
-  background: #ffffff; // fully opaque so a dark page can't bleed through
-  color: #37352f;
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #2b2a33; // fully opaque dark so a light page can't bleed through
+  color: #f5f5f7;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-bottom: none;
   border-left: none;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.28); // lift off light backgrounds too
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4); // lift off light backgrounds too
 
   &.is-visible {
     display: block;
