@@ -1,7 +1,7 @@
 {
   "name": "tranquil-browser",
   "main": "./lib/tranquil-browser",
-  "version": "0.0.99",
+  "version": "0.1.0",
   "description": "Chromium browser with devtools, zoom, history, and direct .url file support from the Project Pane",
   "repository": "https://github.com/tranquillabs/tranquil-browser",
   "author": { "name": "Tranquil Labs", "url": "https://github.com/tranquillabs" },
