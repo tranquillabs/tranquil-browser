@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer, webFrame } = require('electron');
+const { contextBridge, ipcRenderer, webFrame, clipboard } = require('electron');
 const https = require('https');
 
 // Polyfill newer URL statics that this Electron's Chromium (30.5.1 → Chromium
@@ -187,6 +187,22 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getSelectionLink() {
+  // Prefer the element the context menu was opened on: right-clicking an anchor
+  // does not focus it, so document.activeElement usually isn't the link. The
+  // contextmenu listener above records it as window.rightClickedElement.
+  const clicked = window.rightClickedElement;
+  const anchor =
+    clicked && typeof clicked.closest === 'function'
+      ? clicked.closest('a')
+      : null;
+  if (anchor) {
+    if (anchor.dataset.linkType === 'history') {
+      return anchor.dataset.link;
+    }
+    if (anchor.href) {
+      return anchor.href;
+    }
+  }
   const activeEl = document.activeElement;
   const activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
   if (activeElTagName === 'a') {
@@ -255,7 +271,13 @@ ipcRenderer.on('get-selected-content-link', (event, args) => {
       text: textLink,
     });
   } else if (args?.action === 'copy-link-address') {
-    navigator.clipboard.writeText(link);
+    // Electron's clipboard, not navigator.clipboard: the async clipboard API
+    // rejects ("Document is not focused") because the native context menu had
+    // focus until a moment ago, and it would stringify a null link as "null".
+    // Fall back to selected text only when it's itself a URL — wrapping it in
+    // a search URL (textLink) makes sense for the open-* actions, not for copy.
+    const address = link || (isValidHttpUrl(text) ? text : null);
+    if (address) clipboard.writeText(address);
   } else if (args?.action === 'add-link-to-treeview') {
     ipcRenderer.send('add-link-to-treeview', {
       link,
