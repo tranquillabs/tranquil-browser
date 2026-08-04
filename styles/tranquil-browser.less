@@ -25,6 +25,11 @@
   float: left;
   display: none;
   min-width: 160px;
+  // Long history titles/URLs ellipsize inside their rows instead of growing
+  // the menu unboundedly (jquery-ui's _resizeMenu sets an inline width; this
+  // caps it).
+  max-width: 620px;
+  overflow: hidden;
   padding: 12px;
   margin: 0 0 10px 25px;
   list-style: none;
@@ -62,6 +67,54 @@
   border: none !important;
   text-decoration: none;
   background-color: #eeeeee !important;
+}
+
+// URL-bar suggestion rows (history / favorite / search). The autocomplete
+// menu attaches to <body>, outside the theme-scoped workspace element, so
+// these selectors are global like .ui-autocomplete above — and deliberately
+// color-free: text inherits the anchor color the themes already override, and
+// the secondary URL and icons dim via opacity / currentColor on every theme.
+.ui-menu-item > a.tb-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.tb-suggestion-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0.55;
+
+  svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.tb-suggestion-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb-suggestion-url {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.55;
+  font-size: 0.92em;
+
+  &::before {
+    content: '—';
+    margin-right: 8px;
+  }
 }
 
 .tranquil-browser .mega-octicon {
