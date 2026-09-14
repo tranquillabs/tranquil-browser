@@ -10,8 +10,6 @@
 
 ---
 
-> Part of the Tranquil toolkit, in early developer preview — see the [main repo](https://github.com/tranquillabs/tranquil-client) for status.
-
 ## What it is
 
 `tranquil-browser` opens real websites as first-class, splittable **editor tabs** inside Tranquil
@@ -29,11 +27,7 @@ Studio — a full Chromium browser, not a preview pane. It's an owned package, b
 ## Install
 
 Bundled with Tranquil Studio. To run the whole thing from source, follow the
-[Local Dev Setup runbook](https://tranquillabs.dev/docs/v0.1.0/development/local-dev-setup).
-
-## See it in action
-
-![Tranquil Browser](preview.gif)
+[Local Dev Setup runbook](https://tranquillabs.dev/docs/development/getting-started/local-dev-setup).
 
 ## License
 
